@@ -11,11 +11,25 @@ Stack::Stack() {
 
 
 Stack::~Stack() {
+	MakeEmpty();
+	delete topPtr;
 	// Destructor deallocates all nodes from stack 
 	// Must not create a memory leak
 }
 
 void Stack::Push(int n) {
+	
+	if (IsFull()) {
+		throw StackFull;
+	}
+
+	Node *temp = new Node();
+	temp->data = n;
+	temp->next = topPtr;
+	temp->previous = nullptr;
+	topPtr = temp;
+	
+
 	// Pushes integer n onto top of stack.  
 	// If unable to push, throws StackFull exception.
 }
@@ -24,6 +38,12 @@ void Stack::Pop() {
 	if (IsEmpty()) {
 		throw StackEmpty;
 	}
+	Node *temp = new Node();
+	temp = topPtr->next;
+	temp->previous = nullptr;
+	topPtr = temp;
+	delete temp;
+	
 	// Removes top integer from stack
 	// If stack is already empty, throws StackEmpty exception
 }
@@ -46,6 +66,10 @@ bool Stack::IsFull() const {
 
 
 void Stack::MakeEmpty() {
+
+	while (!IsEmpty()) {
+		Pop();
+	}
 	// Removes all nodes from stack leaving an empty, but usable stack
 	// Must not create a memory leak
 }
@@ -74,11 +98,41 @@ int Stack::Size() const {
 
 
 int Stack::Max() const {
+	Node *temp = new Node();
+	Node *nextNode = new Node();
+	temp = topPtr;
+	nextNode = temp->next;
+	int max;
+
+	while (nextNode->next != nullptr) {
+		if (temp->data > NextNode->data) {
+			max = temp->data;
+		}
+		else {
+			max = nextNode->data;
+		}
+	}
+	return max;
 	// Returns value of largest integer within stack WITHOUT modifying the stack
 	// If stack is empty, throws StackEmpty
 }
 
 int Stack::Min() const {
+	Node *temp = new Node();
+	Node *nextNode = new Node();
+	temp = topPtr;
+	nextNode = temp->next;
+	int min;
+
+	while (nextNode->next != nullptr) {
+		if (temp->data < NextNode->data) {
+			min = temp->data;
+		}
+		else {
+			min = nextNode->data;
+		}
+	}
+	return min;
 	// Returns value of smallest integer within stack WITHOUT modifying the stack
 	// If stack is empty, throws StackEmpty
 }
