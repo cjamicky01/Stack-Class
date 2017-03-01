@@ -146,7 +146,7 @@ int main(int argc, char* argv[])
                  {
                    cout << "Top() -- Failed Empty Stack" << endl;
                  }
-		 cout << "TEST";
+		 //cout << "TEST";
                  break;
 		
 	  case '>':   // Max value within Stack

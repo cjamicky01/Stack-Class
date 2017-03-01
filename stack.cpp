@@ -5,43 +5,17 @@
 Stack::Stack() {
 	// Default constructor initializes empty stack
 	topPtr=nullptr;
-	//topPtr->next = nullptr;
-	//topPtr->previous = nullptr;
-
 }
 
 
-Stack::~Stack() {
-	MakeEmpty();
-	delete topPtr;
-	// Destructor deallocates all nodes from stack 
-	// Must not create a memory leak
-}
 
 
-bool Stack::IsEmpty() const {
-	// Returns true if stack is empty; false otherwise
-	if (topPtr == nullptr) {
-		return true;
-	}
-	else {
-		return false;
-	}
-}
 
-
-void Stack::MakeEmpty() {
-
-	while (!IsEmpty()) {
-		Pop();
-	}
-	// Removes all nodes from stack leaving an empty, but usable stack
-	// Must not create a memory leak
-}
 
 
 void Stack::Push(int n) {
 	Node *temp = new Node();
+	//Node *prev = new Node();
 	if (IsFull()) {
 		throw StackFull();
 	} else {
@@ -66,9 +40,9 @@ void Stack::Pop() {
 	Node *temp = new Node();
 	temp = topPtr;
 	topPtr = topPtr->next;
-	topPtr->previous = nullptr;
-	cout << topPtr->data;
-	cout << topPtr->next;
+	if(topPtr!= nullptr){
+		topPtr->previous = nullptr;		
+	} 
 	delete temp;
 	}
 	
@@ -76,6 +50,25 @@ void Stack::Pop() {
 	// If stack is already empty, throws StackEmpty exception
 }
 
+bool Stack::IsEmpty() const {
+	// Returns true if stack is empty; false otherwise
+	if (topPtr == nullptr) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+
+void Stack::MakeEmpty() {
+
+	while (!IsEmpty()) {
+		Pop();
+	}
+	// Removes all nodes from stack leaving an empty, but usable stack
+	// Must not create a memory leak
+}
 
 
 
@@ -88,13 +81,13 @@ bool Stack::IsFull() const {
 
 int Stack::Top() const {
 	if (IsEmpty()) {	
-		cout << "Test";
+		//cout << "Test";
 		throw StackEmpty();
-		cout << "Test";
+		//cout << "Test";
 	} else {
 		return topPtr->data;
 	}
-	cout << "test";
+	//cout << "test";
 	return 0;
 	// Returns value of top integer on stack WITHOUT modifying the stack
 	// If stack is empty, throws StackEmpty exception
@@ -105,7 +98,7 @@ int Stack::Size() const {
 	Node *temp = new Node();
 	temp = topPtr;
 
-	while (temp->next != nullptr) {
+	while (temp != nullptr) {
 		temp = temp->next;
 		count++;
 	}
@@ -115,19 +108,20 @@ int Stack::Size() const {
 
 
 int Stack::Max() const {
-	Node *temp = new Node();
+	if (IsEmpty()) {	
+		//cout << "Test";
+		throw StackEmpty();
+		//cout << "Test";
+	}
 	Node *nextNode = new Node();
-	temp = topPtr;
-	nextNode = temp->next;
-	int max;
+	nextNode = topPtr->next;
+	int max = topPtr->data;
 
-	while (nextNode->next != nullptr) {
-		if (temp->data > nextNode->data) {
-			max = temp->data;
-		}
-		else {
+	while (nextNode != nullptr) {
+		if (max < nextNode->data) {
 			max = nextNode->data;
 		}
+		nextNode = nextNode->next;
 	}
 	return max;
 	// Returns value of largest integer within stack WITHOUT modifying the stack
@@ -135,19 +129,20 @@ int Stack::Max() const {
 }
 
 int Stack::Min() const {
-	Node *temp = new Node();
+	if (IsEmpty()) {	
+		//cout << "Test";
+		throw StackEmpty();
+		//cout << "Test";
+	}
 	Node *nextNode = new Node();
-	temp = topPtr;
-	nextNode = temp->next;
-	int min;
+	nextNode = topPtr->next;
+	int min = topPtr->data;
 
-	while (nextNode->next != nullptr) {
-		if (temp->data < nextNode->data) {
-			min = temp->data;
-		}
-		else {
+	while (nextNode != nullptr) {
+		if (min > nextNode->data) {
 			min = nextNode->data;
 		}
+		nextNode = nextNode->next;
 	}
 	return min;
 	// Returns value of smallest integer within stack WITHOUT modifying the stack
@@ -155,18 +150,23 @@ int Stack::Min() const {
 }
 
 int Stack::Peek(int n) const {
-	int count = 0;
-	Node *temp = new Node();
-	temp = topPtr;
-
-	while (count < n) {
-		count++;
-		if (temp->next = nullptr) {
-			throw StackInvalidPeek();
+	if(Size()>n) {
+		Node *temp = topPtr;
+		for(int i = 0; i < n; i++) 
+		{
+			temp = temp->next;
 		}
-		temp = temp->next;
+		return temp->data;
+
+	} else {
+		throw StackInvalidPeek();	
 	}
-	return temp->data;
 	// Returns stack value n levels down from top of stack. Peek(0) = Top()
 	// If position n does not exist, throws StackInvalidPeek
+}
+
+Stack::~Stack() {
+	MakeEmpty();
+	// Destructor deallocates all nodes from stack 
+	// Must not create a memory leak
 }
