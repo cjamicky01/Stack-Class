@@ -4,8 +4,9 @@
 
 Stack::Stack() {
 	// Default constructor initializes empty stack
-	previous = nullptr;
-	next = nullptr;
+	topPtr=nullptr;
+	//topPtr->next = nullptr;
+	//topPtr->previous = nullptr;
 
 }
 
@@ -17,36 +18,6 @@ Stack::~Stack() {
 	// Must not create a memory leak
 }
 
-void Stack::Push(int n) {
-	
-	if (IsFull()) {
-		throw StackFull;
-	}
-
-	Node *temp = new Node();
-	temp->data = n;
-	temp->next = topPtr;
-	temp->previous = nullptr;
-	topPtr = temp;
-	
-
-	// Pushes integer n onto top of stack.  
-	// If unable to push, throws StackFull exception.
-}
-
-void Stack::Pop() {
-	if (IsEmpty()) {
-		throw StackEmpty;
-	}
-	Node *temp = new Node();
-	temp = topPtr->next;
-	temp->previous = nullptr;
-	topPtr = temp;
-	delete temp;
-	
-	// Removes top integer from stack
-	// If stack is already empty, throws StackEmpty exception
-}
 
 bool Stack::IsEmpty() const {
 	// Returns true if stack is empty; false otherwise
@@ -59,12 +30,6 @@ bool Stack::IsEmpty() const {
 }
 
 
-bool Stack::IsFull() const {
-	// Returns true if stack is full; false otherwise
-	return false;
-}
-
-
 void Stack::MakeEmpty() {
 
 	while (!IsEmpty()) {
@@ -74,18 +39,70 @@ void Stack::MakeEmpty() {
 	// Must not create a memory leak
 }
 
-int Stack::Top() const {
-	if (IsEmpty()) {
-		throw StackEmpty;
+
+void Stack::Push(int n) {
+	Node *temp = new Node();
+	if (IsFull()) {
+		throw StackFull();
+	} else {
+	temp->data = n;
+	cout << "data";
+	temp->previous = nullptr;
+	temp->next = topPtr;
+	if(!IsEmpty()){
+	topPtr->previous = temp;
 	}
-	return topPtr->data;
+	topPtr = temp;
+	}
+	// Pushes integer n onto top of stack.  
+	// If unable to push, throws StackFull exception.
+}
+
+void Stack::Pop() {
+	if (IsEmpty()) {
+		cout << "Is Empty";
+		throw StackEmpty();
+	} else {
+	Node *temp = new Node();
+	temp = topPtr;
+	topPtr = topPtr->next;
+	topPtr->previous = nullptr;
+	cout << topPtr->data;
+	cout << topPtr->next;
+	delete temp;
+	}
+	
+	// Removes top integer from stack
+	// If stack is already empty, throws StackEmpty exception
+}
+
+
+
+
+bool Stack::IsFull() const {
+	// Returns true if stack is full; false otherwise
+	return false;
+}
+
+
+
+int Stack::Top() const {
+	if (IsEmpty()) {	
+		cout << "Test";
+		throw StackEmpty();
+		cout << "Test";
+	} else {
+		return topPtr->data;
+	}
+	cout << "test";
+	return 0;
 	// Returns value of top integer on stack WITHOUT modifying the stack
 	// If stack is empty, throws StackEmpty exception
 }
 
 int Stack::Size() const {
 	int count;
-	Node temp = new Node();
+	Node *temp = new Node();
 	temp = topPtr;
 
 	while (temp->next != nullptr) {
@@ -105,7 +122,7 @@ int Stack::Max() const {
 	int max;
 
 	while (nextNode->next != nullptr) {
-		if (temp->data > NextNode->data) {
+		if (temp->data > nextNode->data) {
 			max = temp->data;
 		}
 		else {
@@ -125,7 +142,7 @@ int Stack::Min() const {
 	int min;
 
 	while (nextNode->next != nullptr) {
-		if (temp->data < NextNode->data) {
+		if (temp->data < nextNode->data) {
 			min = temp->data;
 		}
 		else {
@@ -139,13 +156,13 @@ int Stack::Min() const {
 
 int Stack::Peek(int n) const {
 	int count = 0;
-	Node temp = new Node();
+	Node *temp = new Node();
 	temp = topPtr;
 
 	while (count < n) {
 		count++;
 		if (temp->next = nullptr) {
-			throw StackInvalidPeek;
+			throw StackInvalidPeek();
 		}
 		temp = temp->next;
 	}

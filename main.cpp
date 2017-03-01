@@ -11,7 +11,7 @@
 #include <new>
 #include <cstddef>
 #include "stack.h"
-
+#include "stack.cpp"
 using namespace std;
 
 int main(int argc, char* argv[])
@@ -146,6 +146,7 @@ int main(int argc, char* argv[])
                  {
                    cout << "Top() -- Failed Empty Stack" << endl;
                  }
+		 cout << "TEST";
                  break;
 		
 	  case '>':   // Max value within Stack
