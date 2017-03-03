@@ -94,7 +94,7 @@ int Stack::Top() const {
 }
 
 int Stack::Size() const {
-	int count;
+	int count = 0;
 	Node *temp = new Node();
 	temp = topPtr;
 
